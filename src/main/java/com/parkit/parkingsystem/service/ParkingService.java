@@ -46,7 +46,7 @@ public class ParkingService {
                 ticket.setOutTime(null);
                 ticketDAO.saveTicket(ticket);
                 if(ticketDAO.getNbTicket(vehicleRegNumber)>0){
-                    System.out.println("Heureux de vous revoir ! En tant qu’utilisateur régulier de notre parking, vous allez obtenir une remise de 5%");
+                    System.out.println("Happy to see you again ! As a regular customer of our parking, you will have a 5% discount");
                 }
                 System.out.println("Generated Ticket and saved in DB");
                 System.out.println("Please park your vehicle in spot number:"+parkingSpot.getId());
