@@ -75,8 +75,9 @@ public class TicketDAO {
             con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_TICKET);
             ps.setDouble(1, ticket.getPrice());
-            ps.setTimestamp(2, new Timestamp(ticket.getOutTime().getTime()));
-            ps.setInt(3,ticket.getId());
+            ps.setTimestamp(2, new Timestamp(ticket.getInTime().getTime()));
+            ps.setTimestamp(3, (ticket.getOutTime() == null)?null: (new Timestamp(ticket.getOutTime().getTime())));
+            ps.setInt(4,ticket.getId());
             ps.execute();
             return true;
         }catch (Exception ex){
@@ -86,4 +87,24 @@ public class TicketDAO {
         }
         return false;
     }
+
+    public int getNbTicket(String vehicleRegNumber){
+        int count = 0;
+        Connection con = null;
+        try {
+            con = dataBaseConfig.getConnection();
+            PreparedStatement ps = con.prepareStatement(DBConstants.GET_COUNT_ENTRIES);
+            ps.setString(1, vehicleRegNumber);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
+        }catch (Exception ex){
+            logger.error("Error getting number of entries",ex);
+        }finally {
+            dataBaseConfig.closeConnection(con);
+        }
+        return count;
+    }
+
 }
